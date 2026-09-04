@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hierro Vivo — Herrería artesanal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F2F1EE;
+    --surface:#FFFFFF;
+    --ink:#1C1B1A;
+    --muted:#6E6A64;
+    --line:#E1DED7;
+    --primary:#E23E1F;
+    --primary-dark:#B82E13;
+    --primary-tint:#FDE9E3;
+    --charcoal:#201D1B;
+    --charcoal-2:#2E2A27;
+    --amber:#D98A1E;
+    --amber-tint:#FBF1DC;
+    --sage:#3F7A55;
+    --sage-tint:#E5F1E9;
+    --coral:#B23B2C;
+    --coral-tint:#FBE7E3;
+    --gray:#78808A;
+    --gray-tint:#EDEFF1;
+    --radius:10px;
+    --shadow:0 1px 2px rgba(28,27,26,.06), 0 8px 24px -12px rgba(28,27,26,.22);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter',system-ui,sans-serif;
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  .display{font-family:'Anton',sans-serif;letter-spacing:.01em;}
+  h1,h2,h3,.brand{font-family:'Oswald',sans-serif;}
+  button{font-family:inherit;}
+  a{color:inherit;}
+  ::placeholder{color:#A6A196;}
+
+  /* ── BARRA PROMO (se mueve) ───────────────────────────── */
+  .promo-bar{
+    background:var(--primary);color:#fff;overflow:hidden;white-space:nowrap;
+    padding:9px 0;position:relative;
+  }
+  .promo-track{
+    display:inline-block;padding-left:100%;
+    animation:promo-scroll 32s linear infinite;
+    font-family:'Oswald',sans-serif;font-weight:600;font-size:14px;letter-spacing:.02em;
+  }
+  .promo-track span{padding:0 40px;}
+  @keyframes promo-scroll{
+    0%{transform:translateX(0);}
+    100%{transform:translateX(-100%);}
+  }
+
+  /* ── HEADER ────────────────────────────────────────────── */
+  header.site{
+    background:var(--surface);border-bottom:1px solid var(--line);
+    padding:14px 28px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;
+    position:sticky;top:0;z-index:30;
+  }
+  .logo{
+    font-family:'Anton',sans-serif;font-size:24px;letter-spacing:.02em;color:var(--charcoal);
+    display:flex;align-items:center;gap:8px;cursor:pointer;white-space:nowrap;
+  }
+  .logo .spark{color:var(--primary);}
+  .search-box{
+    flex:1;max-width:440px;position:relative;min-width:160px;
+  }
+  .search-box input{
+    width:100%;padding:10px 14px;border:1px solid var(--line);border-radius:99px;
+    font-size:14px;font-family:inherit;background:var(--gray-tint);
+  }
+  .search-box input:focus{outline:2px solid var(--primary);outline-offset:1px;background:#fff;}
+  .header-actions{display:flex;align-items:center;gap:10px;margin-left:auto;position:relative;}
+  .icon-btn{
+    all:unset;cursor:pointer;display:flex;align-items:center;gap:6px;
+    padding:9px 14px;border-radius:99px;font-size:13.5px;font-weight:600;color:var(--charcoal);
+    position:relative;
+  }
+  .icon-btn:hover{background:var(--gray-tint);}
+  .cart-count{
+    background:var(--primary);color:#fff;border-radius:99px;font-size:10.5px;
+    font-family:'IBM Plex Mono',monospace;padding:1px 6px;
+  }
+  .user-menu{position:relative;}
+  .user-dropdown{
+    display:none;position:absolute;right:0;top:calc(100% + 8px);
+    background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow);
+    min-width:200px;padding:6px;z-index:40;
+  }
+  .user-dropdown.show{display:block;}
+  .user-dropdown .who{padding:10px 12px 4px;font-size:12.5px;color:var(--muted);}
+  .user-dropdown .who strong{display:block;color:var(--ink);font-size:14px;}
+  .user-dropdown button{
+    all:unset;display:block;width:100%;padding:9px 12px;border-radius:7px;
+    font-size:13.5px;cursor:pointer;color:var(--ink);
+  }
+  .user-dropdown button:hover{background:var(--gray-tint);}
+  .user-dropdown hr{border:none;border-top:1px solid var(--line);margin:6px 0;}
+
+  /* ── NAV CATEGORÍAS ────────────────────────────────────── */
+  nav.category-nav{
+    background:var(--charcoal);display:flex;align-items:center;gap:4px;
+    padding:0 24px;overflow-x:auto;position:sticky;top:58px;z-index:29;
+  }
+  nav.category-nav button{
+    all:unset;cursor:pointer;color:rgba(255,255,255,.72);font-size:13.5px;font-weight:500;
+    padding:12px 14px;white-space:nowrap;border-bottom:3px solid transparent;
+  }
+  nav.category-nav button:hover{color:#fff;}
+  nav.category-nav button.active{color:#fff;border-bottom-color:var(--primary);}
+  nav.category-nav .admin-pill{
+    margin-left:auto;color:var(--amber);font-family:'IBM Plex Mono',monospace;
+    font-size:11px;letter-spacing:.04em;text-transform:uppercase;padding:0 10px;white-space:nowrap;
+  }
+
+  main{max-width:1180px;margin:0 auto;padding:28px 24px 60px;}
+
+  /* ── HERO ──────────────────────────────────────────────── */
+  .hero{
+    background:radial-gradient(700px 360px at 15% 20%, rgba(226,62,31,.35), transparent 60%),
+               linear-gradient(135deg, var(--charcoal), var(--charcoal-2));
+    color:#fff;border-radius:16px;padding:48px 40px;margin-bottom:28px;
+    position:relative;overflow:hidden;
+  }
+  .hero::after{
+    content:"";position:absolute;inset:0;
+    background-image:repeating-linear-gradient(45deg, rgba(255,255,255,.025) 0 2px, transparent 2px 22px);
+    pointer-events:none;
+  }
+  .hero-inner{position:relative;max-width:560px;}
+  .hero h1{
+    font-family:'Anton',sans-serif;font-size:44px;line-height:1.05;margin:0 0 14px;
+    letter-spacing:.01em;
+  }
+  .hero h1 .accent{color:var(--primary);}
+  .hero p{font-size:15px;color:rgba(255,255,255,.78);margin:0 0 22px;line-height:1.5;}
+  .hero-actions{display:flex;gap:12px;flex-wrap:wrap;}
+
+  .trust-row{
+    display:grid;grid-template-columns:repeat(auto-fit, minmax(200px,1fr));gap:16px;
+    margin-bottom:32px;
+  }
+  .trust-item{
+    background:var(--surface);border:1px solid var(--line);border-radius:12px;
+    padding:16px;display:flex;align-items:center;gap:12px;
+  }
+  .trust-item .ic{font-size:24px;}
+  .trust-item .tx b{display:block;font-size:13.5px;}
+  .trust-item .tx span{font-size:11.5px;color:var(--muted);}
+
+  .section-title{
+    display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;
+  }
+  .section-title h2{font-size:22px;margin:0;color:var(--charcoal);text-transform:uppercase;letter-spacing:.01em;}
+
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:6px;
+    padding:10px 18px;border-radius:8px;border:1px solid transparent;
+    font-size:14px;font-weight:600;cursor:pointer;transition:filter .12s ease;
+  }
+  .btn:hover{filter:brightness(0.94);}
+  .btn:active{filter:brightness(0.88);}
+  .btn-primary{background:var(--primary);color:#fff;}
+  .btn-block{width:100%;}
+  .btn-ghost{background:transparent;color:var(--charcoal);border-color:var(--line);}
+  .btn-ghost.on-dark{color:#fff;border-color:rgba(255,255,255,.35);}
+  .btn-ghost.on-dark:hover{background:rgba(255,255,255,.08);}
+  .btn-danger{background:var(--coral-tint);color:var(--coral);}
+  .btn-steel{background:var(--charcoal);color:#fff;}
+  .btn-sm{padding:6px 10px;font-size:12.5px;border-radius:7px;}
+  .link-btn{all:unset;cursor:pointer;color:var(--primary-dark);font-weight:600;font-size:13.5px;}
+
+  .field{margin-bottom:14px;}
+  .field label{
+    display:block;font-size:11.5px;font-weight:600;letter-spacing:.04em;
+    text-transform:uppercase;color:var(--muted);margin-bottom:6px;
+  }
+  .field input, .field select, .field textarea{
+    width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:8px;
+    font-size:14px;font-family:inherit;background:#fff;color:var(--ink);
+  }
+  .field input:focus, .field select:focus, .field textarea:focus{
+    outline:2px solid var(--primary);outline-offset:1px;border-color:var(--primary);
+  }
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px 12px;}
+
+  .error-banner{
+    background:var(--coral-tint);color:var(--coral);border:1px solid rgba(178,59,44,.25);
+    padding:10px 12px;border-radius:8px;font-size:13px;margin-bottom:16px;display:none;
+  }
+  .error-banner.show{display:block;}
+
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;}
+  thead th{
+    text-align:left;font-size:11px;letter-spacing:.05em;text-transform:uppercase;
+    color:var(--muted);font-weight:600;padding:12px 16px;border-bottom:1px solid var(--line);
+  }
+  tbody td{padding:12px 16px;border-bottom:1px solid var(--line);vertical-align:middle;}
+  tbody tr:last-child td{border-bottom:none;}
+  tbody tr.clickable{cursor:pointer;}
+  tbody tr.clickable:hover{background:var(--gray-tint);}
+  .empty-row td{color:var(--muted);text-align:center;padding:36px;font-size:14px;}
+
+  .pill{
+    display:inline-flex;align-items:center;gap:6px;padding:3px 10px 3px 8px;border-radius:99px;
+    font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;
+    letter-spacing:.03em;text-transform:uppercase;
+  }
+  .pill .d{width:6px;height:6px;border-radius:50%;}
+  .pill-amber{background:var(--amber-tint);color:var(--amber);}
+  .pill-amber .d{background:var(--amber);}
+  .pill-sage{background:var(--sage-tint);color:var(--sage);}
+  .pill-sage .d{background:var(--sage);}
+  .pill-coral{background:var(--coral-tint);color:var(--coral);}
+  .pill-coral .d{background:var(--coral);}
+  .pill-gray{background:var(--gray-tint);color:var(--gray);}
+  .pill-gray .d{background:var(--gray);}
+  .pill-steel{background:var(--charcoal);color:#fff;}
+  .pill-steel .d{background:var(--primary);}
+  .row-actions{display:flex;gap:6px;flex-wrap:wrap;}
+
+  /* Catálogo */
+  .product-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));gap:16px;}
+  .product-card{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    padding:16px;display:flex;flex-direction:column;gap:8px;box-shadow:var(--shadow);
+  }
+  .product-img{
+    width:100%;height:130px;border-radius:8px;overflow:hidden;background:var(--gray-tint);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .product-img img{width:100%;height:100%;object-fit:cover;}
+  .img-placeholder{font-size:34px;color:var(--muted);}
+  .product-card .cat-tag{
+    font-family:'IBM Plex Mono',monospace;font-size:10px;color:#fff;background:var(--charcoal);
+    display:inline-block;padding:2px 7px;border-radius:5px;text-transform:uppercase;
+    letter-spacing:.04em;width:fit-content;
+  }
+  .product-card h4{margin:2px 0 0;font-size:15px;font-weight:600;color:var(--ink);}
+  .product-card .sku{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);}
+  .product-card .desc{font-size:12.5px;color:var(--muted);flex:1;line-height:1.4;}
+  .product-card .price-row{display:flex;align-items:baseline;justify-content:space-between;margin-top:4px;}
+  .product-card .price{font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:18px;color:var(--primary-dark);}
+  .prod-meta{font-size:11px;color:var(--muted);display:flex;justify-content:space-between;}
+  .prod-meta .make-badge{color:var(--amber);}
+  .prod-meta .ready-badge{color:var(--sage);}
+
+  .overlay{
+    display:none;position:fixed;inset:0;background:rgba(20,18,17,.5);
+    align-items:flex-start;justify-content:center;padding:48px 16px;overflow:auto;z-index:50;
+  }
+  .overlay.show{display:flex;}
+  .modal{
+    background:#fff;border-radius:14px;max-width:480px;width:100%;
+    box-shadow:0 24px 60px -20px rgba(0,0,0,.35);padding:26px 26px 22px;
+  }
+  .modal.wide{max-width:560px;}
+  .modal h3{margin:0 0 4px;font-size:20px;color:var(--charcoal);text-transform:uppercase;}
+  .modal p.sub{margin:0 0 18px;color:var(--muted);font-size:13px;}
+  .modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:14px;flex-wrap:wrap;}
+  .close-x{all:unset;cursor:pointer;float:right;color:var(--muted);font-size:20px;line-height:1;}
+  .toggle-row{text-align:center;margin-top:16px;font-size:13.5px;color:var(--muted);}
+
+  .toast{
+    position:fixed;bottom:22px;right:22px;background:var(--charcoal);color:#fff;
+    padding:12px 18px;border-radius:9px;font-size:13.5px;box-shadow:var(--shadow);
+    display:none;z-index:60;
+  }
+  .toast.show{display:block;}
+
+  .detail-row{display:flex;justify-content:space-between;padding:7px 0;font-size:13.5px;border-bottom:1px solid var(--line);}
+  .detail-row:last-child{border-bottom:none;}
+  .detail-row .k{color:var(--muted);}
+  .detail-row .v{font-weight:600;text-align:right;}
+  .total-line{
+    display:flex;justify-content:space-between;padding-top:12px;margin-top:6px;
+    border-top:2px solid var(--charcoal);font-size:16px;font-weight:700;
+  }
+  .total-line .v{font-family:'IBM Plex Mono',monospace;color:var(--primary-dark);}
+
+  .whatsapp-fab{
+    display:none;position:fixed;bottom:24px;right:24px;z-index:40;
+    width:54px;height:54px;border-radius:50%;background:#25D366;color:#fff;
+    align-items:center;justify-content:center;box-shadow:0 6px 18px -4px rgba(37,211,102,.55);
+    text-decoration:none;font-size:26px;transition:transform .12s ease;
+  }
+  .whatsapp-fab.show{display:flex;}
+  .whatsapp-fab:hover{transform:scale(1.06);}
+  .img-preview{
+    width:100%;height:120px;border-radius:8px;overflow:hidden;background:var(--gray-tint);
+    display:flex;align-items:center;justify-content:center;margin-top:8px;
+  }
+  .img-preview img{width:100%;height:100%;object-fit:cover;}
+  .thumb{width:36px;height:36px;border-radius:6px;object-fit:cover;background:var(--gray-tint);vertical-align:middle;}
+
+  @media (max-width: 720px){
+    .hero h1{font-size:32px;}
+    header.site{padding:12px 16px;}
+    main{padding:20px 14px 50px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ── BARRA PROMO ───────────────────────────────────────── -->
+<div class="promo-bar">
+  <div class="promo-track" id="promoTrack">
+    <span>🔥 10% OFF pagando en efectivo</span>
+    <span>🔨 Herrería artesanal, hecha a tu medida</span>
+    <span>📍 Retirás tu pedido en el local — sin envíos</span>
+    <span>🔥 10% OFF pagando en efectivo</span>
+    <span>🔨 Herrería artesanal, hecha a tu medida</span>
+    <span>📍 Retirás tu pedido en el local — sin envíos</span>
+  </div>
+</div>
+
+<!-- ── HEADER ────────────────────────────────────────────── -->
+<header class="site">
+  <div class="logo" onclick="setView('home')"><span class="spark">🔥</span>HIERRO VIVO</div>
+  <div class="search-box">
+    <input id="headerSearch" placeholder="Buscar portones, rejas, muebles…">
+  </div>
+  <div class="header-actions">
+    <button class="icon-btn" id="cartBtn">🛒 Carrito <span class="cart-count" id="cartBadge">0</span></button>
+    <div class="user-menu">
+      <button class="icon-btn" id="userMenuBtn">👤 <span id="userMenuLabel">Ingresar</span></button>
+      <div class="user-dropdown" id="userDropdown">
+        <!-- se completa por JS -->
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ── NAV CATEGORÍAS ────────────────────────────────────── -->
+<nav class="category-nav" id="categoryNav">
+  <button data-cat="" class="active">Todos los productos</button>
+</nav>
+
+<main>
+  <div class="error-banner" id="appError"></div>
+  <div id="view"></div>
+</main>
+
+<div class="overlay" id="overlay">
+  <div class="modal" id="modalBody"></div>
+</div>
+<div class="toast" id="toast"></div>
+<a class="whatsapp-fab" id="whatsappFab" href="#" target="_blank" rel="noopener" title="Consultar por WhatsApp">💬</a>
+
+<script>
+/* ============================================================
+   CONFIG
+   ============================================================ */
+// TODO: reemplazar por el número real, con código de país y área,
+// sin "+", espacios ni guiones. Ej: Argentina 11 1234-5678 → "5491112345678"
+const WHATSAPP_NUMBER = '5491112345678';
+function whatsappLink(message) {
+  return 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(message);
+}
+
+/* ============================================================
+   ESTADO
+   ============================================================ */
+let state = {
+  token: localStorage.getItem('hv_token') || null,
+  username: localStorage.getItem('hv_username') || null,
+  role: localStorage.getItem('hv_role') || null,
+  view: 'home',
+  categories: [],
+  activeCategoryId: '',
+  cartCount: 0,
+};
+function isAdmin() { return state.role === 'ADMIN'; }
+function isLoggedIn() { return !!state.token; }
+
+/* ============================================================
+   HELPERS DE API
+   ============================================================ */
+async function api(path, options = {}) {
+  const headers = Object.assign({ 'Content-Type': 'application/json' }, options.headers || {});
+  if (state.token) headers['Authorization'] = 'Bearer ' + state.token;
+
+  let res;
+  try {
+    res = await fetch(path, { ...options, headers });
+  } catch (e) {
+    throw new Error('No se pudo conectar con la API. ¿Está corriendo el backend?');
+  }
+  if (res.status === 401) {
+    sessionExpired();
+    throw new Error('Sesión expirada o inválida. Iniciá sesión de nuevo.');
+  }
+  if (res.status === 204) return null;
+
+  let body = null;
+  const text = await res.text();
+  if (text) { try { body = JSON.parse(text); } catch (e) { body = null; } }
+
+  if (!res.ok) {
+    let msg = 'Ocurrió un error (' + res.status + ')';
+    if (body) {
+      if (body.message) msg = body.message;
+      else if (body.fields) msg = Object.entries(body.fields).map(([k, v]) => k + ': ' + v).join(' · ');
+      else if (body.error) msg = body.error;
+    }
+    if (res.status === 403) msg = 'No tenés permisos para hacer esto.';
+    if (res.status === 404 && !body) msg = 'No encontrado.';
+    throw new Error(msg);
+  }
+  return body;
+}
+
+function money(n) {
+  return '$' + Number(n).toLocaleString('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+}
+function fmtDate(d) {
+  if (!d) return '—';
+  return new Date(d).toLocaleString('es-AR', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' });
+}
+function fmtDateOnly(d) {
+  if (!d) return '—';
+  return new Date(d + 'T00:00:00').toLocaleDateString('es-AR', { day:'2-digit', month:'2-digit', year:'numeric' });
+}
+function pill(tone, label) {
+  return `<span class="pill pill-${tone}"><span class="d"></span>${escapeHtml(label)}</span>`;
+}
+function escapeHtml(str) {
+  if (str === null || str === undefined) return '';
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+function paintPromoMessages(settings) {
+  const messages = [settings.promoMessage1, settings.promoMessage2, settings.promoMessage3];
+  document.getElementById('promoTrack').innerHTML = [...messages, ...messages]
+    .map(message => `<span>${escapeHtml(message)}</span>`).join('');
+}
+async function loadPromoMessages() {
+  try { paintPromoMessages(await api('/api/site-settings')); }
+  catch (e) { /* Se mantienen los mensajes incluidos en el HTML si la API no responde. */ }
+}
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2600);
+}
+function showAppError(msg) {
+  const el = document.getElementById('appError');
+  el.textContent = msg; el.classList.add('show');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ============================================================
+   MODAL HELPERS
+   ============================================================ */
+function openModal(html, wide) {
+  document.getElementById('modalBody').className = 'modal' + (wide ? ' wide' : '');
+  document.getElementById('modalBody').innerHTML = html;
+  document.getElementById('overlay').classList.add('show');
+}
+function closeModal() { document.getElementById('overlay').classList.remove('show'); }
+document.getElementById('overlay').addEventListener('click', (e) => {
+  if (e.target.id === 'overlay') closeModal();
+});
+
+/* ============================================================
+   HEADER: menú de usuario
+   ============================================================ */
+document.getElementById('userMenuBtn').addEventListener('click', (e) => {
+  e.stopPropagation();
+  if (!isLoggedIn()) { openAuthModal('login'); return; }
+  document.getElementById('userDropdown').classList.toggle('show');
+});
+document.addEventListener('click', () => document.getElementById('userDropdown').classList.remove('show'));
+
+document.getElementById('cartBtn').addEventListener('click', () => {
+  if (!isLoggedIn()) { openAuthModal('login', 'Iniciá sesión para ver tu carrito.'); return; }
+  setView('cart');
+});
+
+function renderUserMenu() {
+  const label = document.getElementById('userMenuLabel');
+  const dd = document.getElementById('userDropdown');
+  if (!isLoggedIn()) {
+    label.textContent = 'Ingresar';
+    dd.innerHTML = '';
+    return;
+  }
+  label.textContent = state.username;
+  let html = `<div class="who"><strong>${escapeHtml(state.username)}</strong>${state.role}</div><hr>`;
+  if (!isAdmin()) {
+    html += `<button onclick="setView('orders')">Mis Encargos</button>`;
+  }
+  html += `<button onclick="setView('notifications')">Notificaciones</button>`;
+  html += `<button onclick="openMyAccountModal()">Mi cuenta</button>`;
+  if (isAdmin()) {
+    html += `<hr><button onclick="setView('admin-products')">Productos</button>`;
+    html += `<button onclick="setView('admin-categories')">Categorías</button>`;
+    html += `<button onclick="setView('admin-messages')">Carteles de la tienda</button>`;
+    html += `<button onclick="setView('admin-orders')">Todos los Encargos</button>`;
+  }
+  html += `<hr><button onclick="logout()">Cerrar sesión →</button>`;
+  dd.innerHTML = html;
+}
+
+/* ============================================================
+   AUTH: login / registro (modal)
+   ============================================================ */
+function openAuthModal(mode, notice) {
+  const isLogin = mode !== 'register';
+  openModal(`
+    <button class="close-x" onclick="closeModal()">&times;</button>
+    <h3>${isLogin ? 'Ingresar' : 'Crear cuenta'}</h3>
+    <p class="sub">${notice ? escapeHtml(notice) : (isLogin ? 'Iniciá sesión para comprar en Hierro Vivo.' : 'Registrate para hacer tu pedido.')}</p>
+    <div class="error-banner" id="authError"></div>
+    ${isLogin ? `
+      <form id="loginForm">
+        <div class="field"><label>Usuario</label><input id="loginUser" required></div>
+        <div class="field"><label>Contraseña</label><input id="loginPass" type="password" required></div>
+        <button class="btn btn-primary btn-block" type="submit" id="loginBtn">Ingresar</button>
+        <p class="toggle-row">¿No tenés cuenta? <button type="button" class="link-btn" onclick="openAuthModal('register')">Registrate</button></p>
+        <p class="toggle-row" style="font-size:12px;">Admin de prueba: <span class="mono">admin</span> / <span class="mono">admin123</span></p>
+      </form>
+    ` : `
+      <form id="registerForm">
+        <div class="grid2">
+          <div class="field"><label>Nombre</label><input name="firstName" required></div>
+          <div class="field"><label>Apellido</label><input name="lastName" required></div>
+        </div>
+        <div class="field"><label>Usuario</label><input name="username" required></div>
+        <div class="field"><label>Email</label><input name="email" type="email" required></div>
+        <div class="field"><label>Contraseña</label><input name="password" type="password" required minlength="8"></div>
+        <div class="field"><label>Teléfono</label><input name="phone"></div>
+        <button class="btn btn-primary btn-block" type="submit" id="registerBtn">Crear cuenta</button>
+        <p class="toggle-row">¿Ya tenés cuenta? <button type="button" class="link-btn" onclick="openAuthModal('login')">Iniciar sesión</button></p>
+      </form>
+    `}
+  `);
+
+  if (isLogin) {
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const errEl = document.getElementById('authError');
+      errEl.classList.remove('show');
+      const btn = document.getElementById('loginBtn');
+      btn.disabled = true; btn.textContent = 'Ingresando...';
+      try {
+        const data = await api('/api/auth/login', {
+          method: 'POST',
+          body: JSON.stringify({
+            username: document.getElementById('loginUser').value.trim(),
+            password: document.getElementById('loginPass').value
+          })
+        });
+        state.token = data.token; state.username = data.username; state.role = data.role;
+        localStorage.setItem('hv_token', data.token);
+        localStorage.setItem('hv_username', data.username);
+        localStorage.setItem('hv_role', data.role);
+        closeModal();
+        onAuthChanged();
+        toast('¡Bienvenido/a, ' + data.username + '!');
+      } catch (err) {
+        errEl.textContent = err.message; errEl.classList.add('show');
+      } finally {
+        btn.disabled = false; btn.textContent = 'Ingresar';
+      }
+    });
+  } else {
+    document.getElementById('registerForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const errEl = document.getElementById('authError');
+      errEl.classList.remove('show');
+      const btn = document.getElementById('registerBtn');
+      btn.disabled = true; btn.textContent = 'Creando cuenta...';
+      const fd = new FormData(e.target);
+      try {
+        await api('/api/auth/register', {
+          method: 'POST',
+          body: JSON.stringify({
+            username: fd.get('username'), email: fd.get('email'), password: fd.get('password'),
+            firstName: fd.get('firstName'), lastName: fd.get('lastName'),
+            phone: fd.get('phone') || null, address: null
+          })
+        });
+        toast('Cuenta creada. Ahora iniciá sesión.');
+        openAuthModal('login');
+      } catch (err) {
+        errEl.textContent = err.message; errEl.classList.add('show');
+      } finally {
+        btn.disabled = false; btn.textContent = 'Crear cuenta';
+      }
+    });
+  }
+}
+
+function logout() {
+  state.token = null; state.username = null; state.role = null;
+  localStorage.removeItem('hv_token'); localStorage.removeItem('hv_username'); localStorage.removeItem('hv_role');
+  onAuthChanged();
+  setView('home');
+  toast('Sesión cerrada');
+}
+function sessionExpired() {
+  state.token = null; state.username = null; state.role = null;
+  localStorage.removeItem('hv_token'); localStorage.removeItem('hv_username'); localStorage.removeItem('hv_role');
+  onAuthChanged();
+}
+function onAuthChanged() {
+  renderUserMenu();
+  document.getElementById('whatsappFab').classList.toggle('show', true);
+  renderCategoryNav();
+  if (isLoggedIn() && !isAdmin()) refreshCartCount();
+  else document.getElementById('cartBadge').textContent = '0';
+}
+
+/* ============================================================
+   ROUTER
+   ============================================================ */
+function setView(view) {
+  const guestBlocked = ['cart','orders','notifications','admin-products','admin-categories','admin-messages','admin-orders'];
+  if (guestBlocked.includes(view) && !isLoggedIn()) {
+    openAuthModal('login', 'Iniciá sesión para continuar.');
+    return;
+  }
+  const adminOnly = ['admin-products','admin-categories','admin-messages','admin-orders'];
+  if (adminOnly.includes(view) && !isAdmin()) { view = 'home'; }
+
+  state.view = view;
+  document.getElementById('appError').classList.remove('show');
+  document.getElementById('userDropdown').classList.remove('show');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  const renderers = {
+    home: renderHome,
+    cart: renderCart,
+    orders: renderOrders,
+    notifications: renderNotifications,
+    'admin-products': renderAdminProducts,
+    'admin-categories': renderAdminCategories,
+    'admin-messages': renderAdminMessages,
+    'admin-orders': renderAdminOrders,
+  };
+  (renderers[view] || renderHome)();
+}
+
+async function refreshCartCount() {
+  if (!isLoggedIn() || isAdmin()) return;
+  try {
+    const cart = await api('/api/cart');
+    state.cartCount = cart.items.reduce((n, i) => n + i.quantity, 0);
+    document.getElementById('cartBadge').textContent = state.cartCount;
+  } catch (e) { /* silencioso */ }
+}
+
+/* ============================================================
+   CATEGORÍAS (nav superior)
+   ============================================================ */
+async function loadCategories() {
+  state.categories = await api('/api/categories');
+  return state.categories;
+}
+async function renderCategoryNav() {
+  const nav = document.getElementById('categoryNav');
+  let categories = [];
+  try { categories = await loadCategories(); } catch (e) {}
+  let html = `<button data-cat="" class="${state.activeCategoryId===''?'active':''}" onclick="filterByCategory('')">Todos los productos</button>`;
+  html += categories.map(c => `<button data-cat="${c.id}" class="${state.activeCategoryId===c.id?'active':''}" onclick="filterByCategory('${c.id}')">${escapeHtml(c.name)}</button>`).join('');
+  if (isAdmin()) {
+    html += `<span class="admin-pill">Panel admin ↗</span>`;
+  }
+  nav.innerHTML = html;
+}
+function filterByCategory(categoryId) {
+  state.activeCategoryId = categoryId;
+  setView('home');
+}
+
+let searchDebounce;
+document.getElementById('headerSearch').addEventListener('input', (e) => {
+  clearTimeout(searchDebounce);
+  searchDebounce = setTimeout(() => {
+    state.activeCategoryId = '';
+    setView('home');
+  }, 350);
+});
+
+/* ============================================================
+   HOME: hero + confianza + catálogo
+   ============================================================ */
+async function renderHome() {
+  const view = document.getElementById('view');
+  const searchTerm = document.getElementById('headerSearch').value.trim();
+  const showHero = !state.activeCategoryId && !searchTerm;
+
+  view.innerHTML = `
+    ${showHero ? `
+      <section class="hero">
+        <div class="hero-inner">
+          <h1 class="display">HERRERÍA<br>HECHA A TU <span class="accent">MEDIDA</span></h1>
+          <p>Portones, rejas, muebles y piezas artesanales en hierro. Fabricamos tu pedido y lo retirás en el local — sin costos de envío.</p>
+          <div class="hero-actions">
+            <button class="btn btn-primary" onclick="document.getElementById('catalogAnchor').scrollIntoView({behavior:'smooth'})">Ver catálogo</button>
+            <a class="btn btn-ghost on-dark" href="${whatsappLink('Hola! Quiero hacer una consulta sobre un trabajo a medida.')}" target="_blank" rel="noopener">Consultar por WhatsApp</a>
+          </div>
+        </div>
+      </section>
+      <div class="trust-row">
+        <div class="trust-item"><span class="ic">🔨</span><div class="tx"><b>Hecho a medida</b><span>Cada pieza, a tu gusto y necesidad</span></div></div>
+        <div class="trust-item"><span class="ic">📍</span><div class="tx"><b>Retirás en el local</b><span>Sin envíos, sin esperas de logística</span></div></div>
+        <div class="trust-item"><span class="ic">🔒</span><div class="tx"><b>Pago seguro</b><span>Efectivo, transferencia o Mercado Pago</span></div></div>
+      </div>
+    ` : ''}
+    <div id="catalogAnchor"></div>
+    <div class="section-title"><h2>${searchTerm ? 'Resultados de búsqueda' : (state.activeCategoryId ? categoryName(state.activeCategoryId) : 'Catálogo')}</h2></div>
+    <div class="product-grid" id="productGrid"><p style="color:var(--muted);">Cargando…</p></div>
+  `;
+  paintCatalog();
+}
+function categoryName(id) {
+  const c = state.categories.find(c => c.id === id);
+  return c ? c.name : 'Catálogo';
+}
+
+async function paintCatalog() {
+  const grid = document.getElementById('productGrid');
+  const name = document.getElementById('headerSearch').value.trim();
+  grid.innerHTML = `<p style="color:var(--muted);">Cargando…</p>`;
+  try {
+    let qs = '';
+    if (state.activeCategoryId) qs = '?categoryId=' + state.activeCategoryId;
+    else if (name) qs = '?name=' + encodeURIComponent(name);
+    const list = await api('/api/products' + qs);
+    if (!list.length) {
+      grid.innerHTML = `<p style="color:var(--muted);">No se encontraron productos.</p>`;
+      return;
+    }
+    grid.innerHTML = list.map(p => {
+      const madeToOrder = p.stock < 1;
+      const metaRight = madeToOrder
+        ? `<span class="make-badge">🔨 Se hace en ${p.productionDays} día${p.productionDays===1?'':'s'}</span>`
+        : `<span class="ready-badge">✅ Listo para retirar</span>`;
+      return `
+      <div class="product-card">
+        <div class="product-img">
+          ${p.imageUrl ? `<img src="${escapeHtml(p.imageUrl)}" alt="${escapeHtml(p.name)}">` : `<span class="img-placeholder">🔨</span>`}
+        </div>
+        <span class="cat-tag">${escapeHtml(p.categoryName)}</span>
+        <h4>${escapeHtml(p.name)}</h4>
+        <div class="sku">SKU ${escapeHtml(p.sku)}</div>
+        <div class="desc">${escapeHtml(p.description || '')}</div>
+        <div class="prod-meta"><span>${p.stock > 0 ? p.stock + ' en stock' : 'Bajo pedido'}</span>${metaRight}</div>
+        <div class="price-row"><span class="price">${money(p.price)}</span></div>
+        ${!isAdmin() ? `<button class="btn btn-primary btn-sm btn-block" onclick="quickAddToCart('${p.id}')">Agregar al pedido</button>` : ''}
+      </div>`;
+    }).join('');
+  } catch (err) { showAppError(err.message); grid.innerHTML = ''; }
+}
+
+async function quickAddToCart(productId) {
+  if (!isLoggedIn()) { openAuthModal('login', 'Iniciá sesión para armar tu pedido.'); return; }
+  try {
+    await api('/api/cart/items', { method: 'POST', body: JSON.stringify({ productId, quantity: 1 }) });
+    toast('Agregado a tu pedido');
+    refreshCartCount();
+  } catch (err) { showAppError(err.message); }
+}
+
+/* ============================================================
+   MI CUENTA
+   ============================================================ */
+function openMyAccountModal() {
+  document.getElementById('userDropdown').classList.remove('show');
+  openModal(`
+    <button class="close-x" onclick="closeModal()">&times;</button>
+    <h3>Mi cuenta</h3>
+    <p class="sub">Cambiá tus datos. Necesitás tu contraseña actual para confirmar.</p>
+    <form id="accountForm">
+      <div class="grid2">
+        <div class="field"><label>Nombre</label><input name="firstName"></div>
+        <div class="field"><label>Apellido</label><input name="lastName"></div>
+      </div>
+      <div class="field"><label>Teléfono</label><input name="phone"></div>
+      <div class="field"><label>Nuevo usuario</label><input name="newUsername" value="${escapeHtml(state.username||'')}"></div>
+      <div class="field"><label>Nueva contraseña</label><input name="newPassword" type="password" placeholder="Dejalo vacío para no cambiarla"></div>
+      <div class="field"><label>Contraseña actual (obligatoria)</label><input name="currentPassword" type="password" required></div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+      </div>
+    </form>
+  `);
+  document.getElementById('accountForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    const newUsername = fd.get('newUsername')?.trim();
+    try {
+      const updated = await api('/api/account/me', {
+        method: 'PATCH',
+        body: JSON.stringify({
+          currentPassword: fd.get('currentPassword'),
+          newUsername: (newUsername && newUsername !== state.username) ? newUsername : null,
+          newPassword: fd.get('newPassword') || null,
+          firstName: fd.get('firstName') || null,
+          lastName: fd.get('lastName') || null,
+          phone: fd.get('phone') || null,
+          address: null
+        })
+      });
+      state.username = updated.username;
+      localStorage.setItem('hv_username', updated.username);
+      renderUserMenu();
+      closeModal();
+      toast('Cuenta actualizada.');
+    } catch (err) { closeModal(); showAppError(err.message); }
+  });
+}
+
+/* ============================================================
+   CARRITO
+   ============================================================ */
+async function renderCart() {
+  const view = document.getElementById('view');
+  view.innerHTML = `
+    <div class="section-title"><h2>Tu Pedido</h2></div>
+    <div class="card" style="padding:16px;" id="cartBox">Cargando…</div>
+  `;
+  await paintCart();
+}
+async function paintCart() {
+  const box = document.getElementById('cartBox');
+  try {
+    const cart = await api('/api/cart');
+    state.cartCount = cart.items.reduce((n,i) => n+i.quantity, 0);
+    document.getElementById('cartBadge').textContent = state.cartCount;
+
+    if (!cart.items.length) {
+      box.innerHTML = `<p style="color:var(--muted);margin:0;">Todavía no agregaste nada. Mirá el <button class="link-btn" onclick="setView('home')">catálogo</button>.</p>`;
+      return;
+    }
+    box.innerHTML = `
+      <table>
+        <thead><tr><th>Producto</th><th>Precio</th><th>Cantidad</th><th>Subtotal</th><th></th></tr></thead>
+        <tbody>
+          ${cart.items.map(i => `
+            <tr>
+              <td><strong>${escapeHtml(i.productName)}</strong></td>
+              <td class="mono">${money(i.unitPrice)}</td>
+              <td><input type="number" min="1" value="${i.quantity}" style="width:64px;padding:6px 8px;border:1px solid var(--line);border-radius:6px;"
+                  onchange="updateCartItem('${i.id}', this.value)"></td>
+              <td class="mono">${money(i.subtotal)}</td>
+              <td><button class="btn btn-sm btn-danger" onclick="removeCartItem('${i.id}')">Quitar</button></td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+      <div class="total-line" style="padding:14px 4px 4px;"><span>Total</span><span class="v">${money(cart.total)}</span></div>
+      <div style="text-align:right;margin-top:10px;">
+        <button class="btn btn-primary" onclick="openCheckoutModal()">Confirmar encargo</button>
+      </div>
+    `;
+  } catch (err) { showAppError(err.message); box.innerHTML = ''; }
+}
+async function updateCartItem(itemId, quantity) {
+  quantity = parseInt(quantity, 10);
+  if (!quantity || quantity < 1) return;
+  try { await api('/api/cart/items/' + itemId, { method: 'PATCH', body: JSON.stringify({ quantity }) }); paintCart(); }
+  catch (err) { showAppError(err.message); paintCart(); }
+}
+async function removeCartItem(itemId) {
+  try { await api('/api/cart/items/' + itemId, { method: 'DELETE' }); toast('Producto quitado'); paintCart(); }
+  catch (err) { showAppError(err.message); }
+}
+
+function openCheckoutModal() {
+  openModal(`
+    <button class="close-x" onclick="closeModal()">&times;</button>
+    <h3>Confirmar encargo</h3>
+    <p class="sub">No hacemos envíos: retirás tu pedido en el local. Te avisamos cuando esté listo.</p>
+    <form id="checkoutForm">
+      <div class="field">
+        <label>Notas / especificaciones (medidas, color, terminación...)</label>
+        <textarea name="notes" rows="3" placeholder="Opcional"></textarea>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Generar encargo</button>
+      </div>
+    </form>
+  `);
+  document.getElementById('checkoutForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    try {
+      const order = await api('/api/orders', { method: 'POST', body: JSON.stringify({ notes: fd.get('notes') || null }) });
+      refreshCartCount();
+      openOrderCreatedModal(order);
+    } catch (err) { closeModal(); showAppError(err.message); }
+  });
+}
+function openOrderCreatedModal(order) {
+  const msg = 'Hola! Acabo de generar el encargo ' + order.id.slice(0,8) +
+              ' por ' + money(order.totalAmount) + ' en Hierro Vivo. Quería avisarles.';
+  openModal(`
+    <button class="close-x" onclick="closeModal()">&times;</button>
+    <h3>¡Encargo generado!</h3>
+    <p class="sub">Pedido ${order.id.slice(0,8)} por ${money(order.totalAmount)}.
+      Fecha estimada de retiro: <strong>${fmtDateOnly(order.estimatedReadyDate)}</strong>.</p>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal(); setView('orders');">Ver mis encargos</button>
+      <a class="btn btn-primary" href="${whatsappLink(msg)}" target="_blank" rel="noopener" onclick="closeModal();">Avisar por WhatsApp</a>
+    </div>
+  `);
+}
+
+/* ============================================================
+   MIS ENCARGOS (cliente)
+   ============================================================ */
+const ORDER_STATUS_PILL = {
+  PENDING:         ['amber', 'Pendiente'],
+  CONFIRMED:       ['sage',  'Confirmado'],
+  IN_PROGRESS:     ['steel', 'En fabricación'],
+  READY_FOR_PICKUP:['sage',  'Listo para retirar'],
+  COMPLETED:       ['gray',  'Retirado'],
+  CANCELLED:       ['coral', 'Cancelado'],
+};
+
+async function renderOrders() {
+  const view = document.getElementById('view');
+  view.innerHTML = `
+    <div class="section-title"><h2>Mis Encargos</h2></div>
+    <div class="card"><table>
+      <thead><tr><th>Encargo</th><th>Fecha</th><th>Total</th><th>Retiro estimado</th><th>Estado</th><th></th></tr></thead>
+      <tbody id="ordersBody"><tr class="empty-row"><td colspan="6">Cargando…</td></tr></tbody>
+    </table></div>
+  `;
+  try {
+    const list = await api('/api/orders');
+    const body = document.getElementById('ordersBody');
+    if (!list.length) { body.innerHTML = `<tr class="empty-row"><td colspan="6">Todavía no hiciste ningún encargo.</td></tr>`; return; }
+    body.innerHTML = list.map(o => {
+      const [tone, label] = ORDER_STATUS_PILL[o.status] || ['gray', o.status];
+      return `
+        <tr class="clickable" onclick="openOrderDetail('${o.id}')">
+          <td class="mono">${o.id.slice(0,8)}</td>
+          <td>${fmtDate(o.createdAt)}</td>
+          <td class="mono">${money(o.totalAmount)}</td>
+          <td class="mono">${fmtDateOnly(o.estimatedReadyDate)}</td>
+          <td>${pill(tone, label)}</td>
+          <td><button class="btn btn-sm btn-ghost" onclick="event.stopPropagation(); openOrderDetail('${o.id}')">Ver</button></td>
+        </tr>`;
+    }).join('');
+  } catch (err) { showAppError(err.message); }
+}
+
+async function openOrderDetail(orderId) {
+  let order, payment = null;
+  try {
+    order = await api('/api/orders/' + orderId);
+    try { payment = await api('/api/payments/pedido/' + orderId); } catch (e) {}
+  } catch (err) { showAppError(err.message); return; }
+
+  const [tone, label] = ORDER_STATUS_PILL[order.status] || ['gray', order.status];
+  let actions = '';
+  if (order.status === 'PENDING') {
+    if (!payment) actions += `<button class="btn btn-primary btn-sm" onclick="openPayModal('${order.id}')">Pagar encargo</button>`;
+    actions += `<button class="btn btn-danger btn-sm" onclick="cancelMyOrder('${order.id}')">Cancelar encargo</button>`;
+  }
+
+  openModal(`
+    <button class="close-x" onclick="closeModal()">&times;</button>
+    <h3>Encargo ${order.id.slice(0,8)}</h3>
+    <p class="sub">${fmtDate(order.createdAt)} · ${pill(tone, label)}</p>
+    <div style="margin:14px 0;">
+      ${order.items.map(i => `
+        <div class="detail-row">
+          <span class="k">${escapeHtml(i.productName)} × ${i.quantity}</span>
+          <span class="v mono">${money(i.subtotal)}</span>
+        </div>
+      `).join('')}
+      <div class="total-line"><span>Total</span><span class="v">${money(order.totalAmount)}</span></div>
+    </div>
+    <div class="detail-row"><span class="k">Retiro estimado</span><span class="v">${fmtDateOnly(order.estimatedReadyDate)}</span></div>
+    ${order.notes ? `<div class="detail-row"><span class="k">Notas</span><span class="v">${escapeHtml(order.notes)}</span></div>` : ''}
+    <div class="detail-row"><span class="k">Pago</span><span class="v">${payment ? payment.status + ' (' + payment.method + ')' : 'Sin registrar'}</span></div>
+    ${actions ? `<div class="modal-actions">${actions}</div>` : ''}
+  `);
+}
+
+function openPayModal(orderId) {
+  openModal(`
+    <button class="close-x" onclick="closeModal()">&times;</button>
+    <h3>Pagar encargo</h3>
+    <p class="sub">Elegí un método de pago (simulado, no se procesa un pago real). Pagando en efectivo tenés 10% OFF en el local.</p>
+    <form id="payForm">
+      <div class="field">
+        <label>Método de pago</label>
+        <select name="method" required>
+          <option value="CASH">Efectivo (10% OFF)</option>
+          <option value="MERCADO_PAGO">Mercado Pago</option>
+          <option value="CREDIT_CARD">Tarjeta de crédito</option>
+          <option value="DEBIT_CARD">Tarjeta de débito</option>
+          <option value="BANK_TRANSFER">Transferencia bancaria</option>
+        </select>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Confirmar pago</button>
+      </div>
+    </form>
+  `);
+  document.getElementById('payForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    try {
+      await api('/api/payments', { method: 'POST', body: JSON.stringify({ orderId, method: fd.get('method') }) });
+      closeModal(); toast('Pago procesado'); setView('orders');
+    } catch (err) { closeModal(); showAppError(err.message); }
+  });
+}
+async function cancelMyOrder(orderId) {
+  if (!confirm('¿Cancelar este encargo?')) return;
+  try {
+    await api('/api/orders/' + orderId + '/cancelar', { method: 'PATCH' });
+    closeModal(); toast('Encargo cancelado'); setView('orders');
+  } catch (err) { closeModal(); showAppError(err.message); }
+}
+
+/* ============================================================
+   NOTIFICACIONES
+   ============================================================ */
+async function renderNotifications() {
+  const view = document.getElementById('view');
+  view.innerHTML = `
+    <div class="section-title"><h2>Notificaciones</h2></div>
+    <div class="card"><table>
+      <thead><tr><th>Asunto</th><th>Mensaje</th><th>Fecha</th><th></th></tr></thead>
+      <tbody id="notifBody"><tr class="empty-row"><td colspan="4">Cargando…</td></tr></tbody>
+    </table></div>
+  `;
+  try {
+    const list = await api('/api/notifications');
+    const body = document.getElementById('notifBody');
+    if (!list.length) { body.innerHTML = `<tr class="empty-row"><td colspan="4">No tenés notificaciones todavía.</td></tr>`; return; }
+    body.innerHTML = list.map(n => `
+      <tr style="${n.read ? '' : 'background:var(--primary-tint);'}">
+        <td><strong>${escapeHtml(n.subject)}</strong></td>
+        <td>${escapeHtml(n.body)}</td>
+        <td class="mono">${fmtDate(n.createdAt)}</td>
+        <td>${!n.read ? `<button class="btn btn-sm btn-ghost" onclick="markNotifRead('${n.id}')">Marcar leída</button>` : ''}</td>
+      </tr>
+    `).join('');
+  } catch (err) { showAppError(err.message); }
+}
+async function markNotifRead(id) {
+  try { await api('/api/notifications/' + id + '/leer', { method: 'PATCH' }); renderNotifications(); }
+  catch (err) { showAppError(err.message); }
+}
+
+/* ============================================================
+   ADMIN: PRODUCTOS
+   ============================================================ */
+async function renderAdminProducts() {
+  const view = document.getElementById('view');
+  view.innerHTML = `
+    <div class="section-title"><h2>Productos</h2>
+      <button class="btn btn-primary" id="newProductBtn">+ Nuevo producto</button>
+    </div>
+    <div class="card"><table>
+      <thead><tr><th></th><th>SKU</th><th>Producto</th><th>Categoría</th><th>Precio</th><th>Stock</th><th>Días fab.</th><th>Estado</th><th></th></tr></thead>
+      <tbody id="prodBody"><tr class="empty-row"><td colspan="9">Cargando…</td></tr></tbody>
+    </table></div>
+  `;
+  let categories = [];
+  try { categories = await loadCategories(); } catch (e) {}
+  document.getElementById('newProductBtn').addEventListener('click', () => openProductForm(categories));
+  paintAdminProducts();
+}
+async function paintAdminProducts() {
+  const body = document.getElementById('prodBody');
+  try {
+    const list = await api('/api/products');
+    if (!list.length) { body.innerHTML = `<tr class="empty-row"><td colspan="9">No hay productos cargados.</td></tr>`; return; }
+    body.innerHTML = list.map(p => `
+      <tr>
+        <td>${p.imageUrl ? `<img class="thumb" src="${escapeHtml(p.imageUrl)}" alt="">` : `<span class="thumb" style="display:inline-flex;align-items:center;justify-content:center;">🔨</span>`}</td>
+        <td class="mono">${escapeHtml(p.sku)}</td>
+        <td><strong>${escapeHtml(p.name)}</strong></td>
+        <td>${pill('steel', p.categoryName)}</td>
+        <td class="mono">${money(p.price)}</td>
+        <td class="mono">${p.stock}</td>
+        <td class="mono">${p.productionDays}</td>
+        <td>${pill(p.active ? 'sage' : 'gray', p.active ? 'Activo' : 'Inactivo')}</td>
+        <td class="row-actions">
+          <button class="btn btn-sm btn-ghost" onclick='openProductForm(state.categories, ${JSON.stringify(p).replace(/'/g,"&#39;")})'>Editar</button>
+          ${p.active ? `<button class="btn btn-sm btn-danger" onclick="deactivateProduct('${p.id}')">Desactivar</button>` : ''}
+        </td>
+      </tr>
+    `).join('');
+  } catch (err) { showAppError(err.message); }
+}
+function openProductForm(categories, existing) {
+  const isEdit = !!existing;
+  const currentUrl = isEdit ? (existing.imageUrl || '') : '';
+  openModal(`
+    <button class="close-x" onclick="closeModal()">&times;</button>
+    <h3>${isEdit ? 'Editar producto' : 'Nuevo producto'}</h3>
+    <form id="productForm">
+      <div class="grid2">
+        <div class="field"><label>SKU</label><input name="sku" value="${isEdit?escapeHtml(existing.sku):''}" ${isEdit?'readonly':''} required></div>
+        <div class="field"><label>Categoría</label>
+          <select name="categoryId" required>
+            ${categories.map(c => `<option value="${c.id}" ${isEdit && existing.categoryId===c.id?'selected':''}>${escapeHtml(c.name)}</option>`).join('')}
+          </select>
+        </div>
+      </div>
+      <div class="field"><label>Nombre</label><input name="name" value="${isEdit?escapeHtml(existing.name):''}" required></div>
+      <div class="field"><label>Descripción</label><textarea name="description" rows="2">${isEdit?escapeHtml(existing.description||''):''}</textarea></div>
+      <div class="grid2">
+        <div class="field"><label>Precio</label><input name="price" type="number" step="0.01" min="0" value="${isEdit?existing.price:''}" required></div>
+        <div class="field"><label>Stock (listas para retirar)</label><input name="stock" type="number" min="0" value="${isEdit?existing.stock:'0'}" required></div>
+      </div>
+      <div class="field"><label>Días de fabricación (si no hay stock)</label><input name="productionDays" type="number" min="0" value="${isEdit?existing.productionDays:'0'}" required></div>
+      <div class="field">
+        <label>Foto del producto</label>
+        <input type="file" id="productImageFile" accept="image/png,image/jpeg,image/webp,image/gif">
+        <div class="img-preview" id="productImagePreview" style="${currentUrl ? '' : 'display:none;'}">
+          ${currentUrl ? `<img src="${escapeHtml(currentUrl)}" alt="">` : ''}
+        </div>
+        <input type="hidden" id="productImageUrlHidden" value="${escapeHtml(currentUrl)}">
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
+        <button type="submit" class="btn btn-primary" id="productFormSubmitBtn">${isEdit ? 'Guardar cambios' : 'Crear producto'}</button>
+      </div>
+    </form>
+  `, true);
+
+  document.getElementById('productImageFile').addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const submitBtn = document.getElementById('productFormSubmitBtn');
+    submitBtn.disabled = true; submitBtn.textContent = 'Subiendo foto...';
+    try {
+      const fd = new FormData(); fd.append('file', file);
+      const headers = {}; if (state.token) headers['Authorization'] = 'Bearer ' + state.token;
+      const res = await fetch('/api/uploads/imagen', { method: 'POST', headers, body: fd });
+      if (!res.ok) { const b = await res.json().catch(()=>null); throw new Error(b?.message || 'No se pudo subir la imagen'); }
+      const data = await res.json();
+      document.getElementById('productImageUrlHidden').value = data.url;
+      const preview = document.getElementById('productImagePreview');
+      preview.style.display = ''; preview.innerHTML = `<img src="${escapeHtml(data.url)}" alt="">`;
+    } catch (err) { showAppError(err.message); }
+    finally { submitBtn.disabled = false; submitBtn.textContent = isEdit ? 'Guardar cambios' : 'Crear producto'; }
+  });
+
+  document.getElementById('productForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    const payload = {
+      name: fd.get('name'), description: fd.get('description') || null,
+      price: fd.get('price'), stock: parseInt(fd.get('stock'), 10),
+      productionDays: parseInt(fd.get('productionDays'), 10),
+      imageUrl: document.getElementById('productImageUrlHidden').value || null,
+      categoryId: fd.get('categoryId')
+    };
+    try {
+      if (isEdit) {
+        payload.active = existing.active;
+        await api('/api/products/' + existing.id, { method: 'PUT', body: JSON.stringify(payload) });
+      } else {
+        payload.sku = fd.get('sku');
+        await api('/api/products', { method: 'POST', body: JSON.stringify(payload) });
+      }
+      closeModal(); toast(isEdit ? 'Producto actualizado' : 'Producto creado'); paintAdminProducts();
+    } catch (err) { closeModal(); showAppError(err.message); }
+  });
+}
+async function deactivateProduct(id) {
+  if (!confirm('¿Desactivar este producto?')) return;
+  try { await api('/api/products/' + id, { method: 'DELETE' }); toast('Producto desactivado'); paintAdminProducts(); }
+  catch (err) { showAppError(err.message); }
+}
+
+/* ============================================================
+   ADMIN: CATEGORÍAS
+   ============================================================ */
+async function renderAdminCategories() {
+  const view = document.getElementById('view');
+  view.innerHTML = `
+    <div class="section-title"><h2>Categorías</h2>
+      <button class="btn btn-primary" id="newCategoryBtn">+ Nueva categoría</button>
+    </div>
+    <div class="card"><table>
+      <thead><tr><th>Nombre</th><th>Descripción</th><th>Estado</th><th></th></tr></thead>
+      <tbody id="catBody"><tr class="empty-row"><td colspan="4">Cargando…</td></tr></tbody>
+    </table></div>
+  `;
+  document.getElementById('newCategoryBtn').addEventListener('click', () => openCategoryForm());
+  paintAdminCategories();
+}
+async function paintAdminCategories() {
+  const body = document.getElementById('catBody');
+  try {
+    const list = await api('/api/categories');
+    state.categories = list;
+    if (!list.length) { body.innerHTML = `<tr class="empty-row"><td colspan="4">No hay categorías cargadas.</td></tr>`; return; }
+    body.innerHTML = list.map(c => `
+      <tr>
+        <td><strong>${escapeHtml(c.name)}</strong></td>
+        <td>${escapeHtml(c.description || '—')}</td>
+        <td>${pill(c.active ? 'sage' : 'gray', c.active ? 'Activa' : 'Inactiva')}</td>
+        <td class="row-actions">
+          <button class="btn btn-sm btn-ghost" onclick='openCategoryForm(${JSON.stringify(c).replace(/'/g,"&#39;")})'>Editar</button>
+          ${c.active ? `<button class="btn btn-sm btn-danger" onclick="deactivateCategory('${c.id}')">Desactivar</button>` : ''}
+        </td>
+      </tr>
+    `).join('');
+  } catch (err) { showAppError(err.message); }
+}
+function openCategoryForm(existing) {
+  const isEdit = !!existing;
+  openModal(`
+    <button class="close-x" onclick="closeModal()">&times;</button>
+    <h3>${isEdit ? 'Editar categoría' : 'Nueva categoría'}</h3>
+    <form id="categoryForm">
+      <div class="field"><label>Nombre</label><input name="name" value="${isEdit?escapeHtml(existing.name):''}" required></div>
+      <div class="field"><label>Descripción</label><input name="description" value="${isEdit?escapeHtml(existing.description||''):''}"></div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
+        <button type="submit" class="btn btn-primary">${isEdit ? 'Guardar cambios' : 'Crear categoría'}</button>
+      </div>
+    </form>
+  `);
+  document.getElementById('categoryForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    const payload = { name: fd.get('name'), description: fd.get('description') || null };
+    try {
+      if (isEdit) await api('/api/categories/' + existing.id, { method: 'PUT', body: JSON.stringify(payload) });
+      else await api('/api/categories', { method: 'POST', body: JSON.stringify(payload) });
+      closeModal(); toast(isEdit ? 'Categoría actualizada' : 'Categoría creada'); paintAdminCategories();
+      renderCategoryNav();
+    } catch (err) { closeModal(); showAppError(err.message); }
+  });
+}
+async function deactivateCategory(id) {
+  if (!confirm('¿Desactivar esta categoría?')) return;
+  try { await api('/api/categories/' + id, { method: 'DELETE' }); toast('Categoría desactivada'); paintAdminCategories(); renderCategoryNav(); }
+  catch (err) { showAppError(err.message); }
+}
+
+/* ============================================================
+   ADMIN: CARTELES DE LA TIENDA
+   ============================================================ */
+async function renderAdminMessages() {
+  const view = document.getElementById('view');
+  view.innerHTML = `
+    <div class="section-title"><h2>Carteles de la tienda</h2></div>
+    <div class="card" style="padding:22px;max-width:720px;">
+      <p style="margin:0 0 18px;color:var(--muted);font-size:13.5px;">Estos tres mensajes se repiten en la barra roja superior. La animación está configurada para desplazarse más lenta.</p>
+      <form id="siteSettingsForm">
+        <div class="field"><label>Cartel 1</label><input name="promoMessage1" maxlength="160" required></div>
+        <div class="field"><label>Cartel 2</label><input name="promoMessage2" maxlength="160" required></div>
+        <div class="field"><label>Cartel 3</label><input name="promoMessage3" maxlength="160" required></div>
+        <div class="modal-actions"><button type="submit" class="btn btn-primary">Guardar carteles</button></div>
+      </form>
+    </div>
+  `;
+  try {
+    const settings = await api('/api/site-settings');
+    const form = document.getElementById('siteSettingsForm');
+    form.promoMessage1.value = settings.promoMessage1;
+    form.promoMessage2.value = settings.promoMessage2;
+    form.promoMessage3.value = settings.promoMessage3;
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const fd = new FormData(form);
+      try {
+        const updated = await api('/api/site-settings', {
+          method: 'PUT',
+          body: JSON.stringify({
+            promoMessage1: fd.get('promoMessage1'),
+            promoMessage2: fd.get('promoMessage2'),
+            promoMessage3: fd.get('promoMessage3')
+          })
+        });
+        paintPromoMessages(updated);
+        toast('Carteles actualizados');
+      } catch (err) { showAppError(err.message); }
+    });
+  } catch (err) { showAppError(err.message); }
+}
+
+/* ============================================================
+   ADMIN: TODOS LOS ENCARGOS
+   ============================================================ */
+async function renderAdminOrders() {
+  const view = document.getElementById('view');
+  view.innerHTML = `
+    <div class="section-title"><h2>Todos los Encargos</h2></div>
+    <div class="card"><table>
+      <thead><tr><th>Encargo</th><th>Fecha</th><th>Total</th><th>Retiro estimado</th><th>Estado</th><th></th></tr></thead>
+      <tbody id="adminOrdersBody"><tr class="empty-row"><td colspan="6">Cargando…</td></tr></tbody>
+    </table></div>
+  `;
+  paintAdminOrders();
+}
+async function paintAdminOrders() {
+  const body = document.getElementById('adminOrdersBody');
+  try {
+    const list = await api('/api/orders/all');
+    if (!list.length) { body.innerHTML = `<tr class="empty-row"><td colspan="6">No hay encargos todavía.</td></tr>`; return; }
+    body.innerHTML = list.map(o => {
+      const [tone, label] = ORDER_STATUS_PILL[o.status] || ['gray', o.status];
+      return `
+        <tr class="clickable" onclick="openAdminOrderDetail('${o.id}')">
+          <td class="mono">${o.id.slice(0,8)}</td>
+          <td>${fmtDate(o.createdAt)}</td>
+          <td class="mono">${money(o.totalAmount)}</td>
+          <td class="mono">${fmtDateOnly(o.estimatedReadyDate)}</td>
+          <td>${pill(tone, label)}</td>
+          <td><button class="btn btn-sm btn-ghost" onclick="event.stopPropagation(); openAdminOrderDetail('${o.id}')">Gestionar</button></td>
+        </tr>`;
+    }).join('');
+  } catch (err) { showAppError(err.message); }
+}
+async function openAdminOrderDetail(orderId) {
+  let order, payment = null;
+  try {
+    order = await api('/api/orders/' + orderId);
+    try { payment = await api('/api/payments/pedido/' + orderId); } catch (e) {}
+  } catch (err) { showAppError(err.message); return; }
+
+  const [tone, label] = ORDER_STATUS_PILL[order.status] || ['gray', order.status];
+  openModal(`
+    <button class="close-x" onclick="closeModal()">&times;</button>
+    <h3>Encargo ${order.id.slice(0,8)}</h3>
+    <p class="sub">${fmtDate(order.createdAt)} · ${pill(tone, label)}</p>
+    <div style="margin:14px 0;">
+      ${order.items.map(i => `
+        <div class="detail-row">
+          <span class="k">${escapeHtml(i.productName)} × ${i.quantity}</span>
+          <span class="v mono">${money(i.subtotal)}</span>
+        </div>
+      `).join('')}
+      <div class="total-line"><span>Total</span><span class="v">${money(order.totalAmount)}</span></div>
+    </div>
+    <div class="detail-row"><span class="k">Retiro estimado</span><span class="v">${fmtDateOnly(order.estimatedReadyDate)}</span></div>
+    ${order.notes ? `<div class="detail-row"><span class="k">Notas del cliente</span><span class="v">${escapeHtml(order.notes)}</span></div>` : ''}
+    <div class="detail-row"><span class="k">Pago</span><span class="v">${payment ? payment.status + ' (' + payment.method + ')' : 'Sin registrar'}</span></div>
+
+    <div class="field" style="margin-top:16px;">
+      <label>Cambiar estado del encargo</label>
+      <select id="orderStatusSelect">
+        ${['PENDING','CONFIRMED','IN_PROGRESS','READY_FOR_PICKUP','COMPLETED','CANCELLED'].map(s =>
+          `<option value="${s}" ${s===order.status?'selected':''}>${(ORDER_STATUS_PILL[s]||[,s])[1]}</option>`).join('')}
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button type="button" class="btn btn-ghost" onclick="closeModal()">Cerrar</button>
+      <button type="button" class="btn btn-primary" onclick="saveOrderStatus('${order.id}')">Guardar estado</button>
+    </div>
+  `);
+}
+async function saveOrderStatus(orderId) {
+  const status = document.getElementById('orderStatusSelect').value;
+  try {
+    await api('/api/orders/' + orderId + '/estado?status=' + status, { method: 'PATCH' });
+    closeModal(); toast('Estado del encargo actualizado'); paintAdminOrders();
+  } catch (err) { showAppError(err.message); }
+}
+
+/* ============================================================
+   INIT
+   ============================================================ */
+document.getElementById('whatsappFab').href = whatsappLink('Hola! Quiero hacer una consulta sobre productos de Hierro Vivo.');
+onAuthChanged();
+loadPromoMessages();
+setView('home');
+</script>
+</body>
+</html>

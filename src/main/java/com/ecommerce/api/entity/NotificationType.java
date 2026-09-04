@@ -1,0 +1,6 @@
+package com.ecommerce.api.entity;
+
+public enum NotificationType {
+    ORDER_CREATED, PAYMENT_APPROVED, PAYMENT_REJECTED,
+    ORDER_IN_PROGRESS, ORDER_READY, ORDER_COMPLETED, ORDER_CANCELLED
+}
