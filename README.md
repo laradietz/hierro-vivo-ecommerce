@@ -129,3 +129,21 @@ Tests unitarios con JUnit 5 + Mockito sobre `ProductService` y `CartService`.
   usuario autenticado (o que sea ADMIN).
 - El pago está **simulado**: no hay integración real con Mercado Pago,
   Stripe, etc.
+
+## Qué aprendí
+
+- Modelar un dominio de e-commerce que no es genérico: sin envíos, con
+  fecha de entrega calculada a partir del tiempo de fabricación de cada
+  pieza, en vez de forzar el modelo clásico de "carrito → envío".
+- Separar entidades JPA de DTOs para evitar problemas de serialización de
+  relaciones lazy de Hibernate.
+- Verificar la propiedad de cada encargo/pago del lado del servidor, no solo
+  en la interfaz.
+
+## Próximas mejoras
+
+- Reemplazar `ddl-auto=update` por migraciones versionadas con Flyway.
+- Tests de integración con Testcontainers sobre el flujo completo de
+  encargo → pago → cambio de estado.
+- Integrar un proveedor de pagos real detrás de la misma interfaz que hoy
+  usa el pago simulado.
