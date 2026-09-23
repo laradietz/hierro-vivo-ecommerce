@@ -31,7 +31,7 @@ class ProductServiceTest {
     @Test
     void create_lanzaBusinessException_siElSkuYaExiste() {
         var request = new CreateProductRequest("HM-0001", "Martillo", "desc",
-                new BigDecimal("1000"), 10, null, UUID.randomUUID());
+                new BigDecimal("1000"), 10, 5, null, UUID.randomUUID());
 
         when(productRepository.existsBySkuIgnoreCase("HM-0001")).thenReturn(true);
 
@@ -47,7 +47,7 @@ class ProductServiceTest {
         UUID categoryId = UUID.randomUUID();
         var category = Category.builder().id(categoryId).name("Herramientas").active(true).build();
         var request = new CreateProductRequest("HM-0002", "Destornillador", "desc",
-                new BigDecimal("500"), 20, null, categoryId);
+                new BigDecimal("500"), 20, 3, null, categoryId);
 
         when(productRepository.existsBySkuIgnoreCase("HM-0002")).thenReturn(false);
         when(categoryService.findEntity(categoryId)).thenReturn(category);
